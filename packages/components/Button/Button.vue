@@ -7,12 +7,35 @@
   - index.ts  入口文件，用来导出组件
   - * constants.ts 常量
   */
+
+  import { ref } from 'vue';
+  import type { ButtonProps } from './type';
+
   defineOptions({
     name: 'ErButton'
   })
+  const props = withDefaults(defineProps<ButtonProps>(), {
+    tag: "button",
+    nativeType: "button"
+  })
+
+  const slots = defineSlots()
+
+  const _ref = ref<HTMLButtonElement>()
 
 </script>
 
 <template>
-  <button style="color:red;">test button</button>
+  <component ref="_ref" class="er-button" :is="props.tag" :type="tag === 'button' ? nativeType : void 0"
+    :disabled="disabled || loading ? true : void 0" :class="{
+      [`er-button--${type}`]: type,
+      [`er-button--${size}`]: size,
+      'is-plain': plain,
+      'is-round': round,
+      'is-circle': circle,
+      'is-disabled': disabled,
+      'is-loading': loading,
+    }">
+    <slot></slot>
+  </component>
 </template>
